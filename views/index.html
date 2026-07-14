@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Frontend - Águilas Doradas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ads-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            max-width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .ads-badge {
+            background-color: #ff9800;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .ads-slides img {
+            max-width: 100%;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .ads-slides img:first-child {
+            display: block;
+        }
+
+        .ads-content h3 {
+            margin: 15px 0 10px 0;
+            color: #333;
+        }
+
+        .ads-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .ads-prices {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .ads-old {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .ads-new {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 24px;
+        }
+
+        .ads-date-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ads-date-group label {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        .ads-date-group input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .ads-btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .ads-btn:hover {
+            background: #219653;
+        }
+
+        .ads-gallery,
+        .ads-accordion-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #2980b9;
+            text-decoration: none;
+            font-size: 14px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .ads-accordion-content {
+            display: block;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .ads-accordion-content ul {
+            padding-left: 20px;
+        }
+
+        .ads-accordion-content li {
+            margin-bottom: 5px;
+            list-style: none;
+        }
+
+        .ads-accordion-content i {
+            color: #27ae60;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ads-card" data-room="Junior Suite">
+        <div class="ads-slider">
+            <div class="ads-badge">Vista a selva / Promo</div>
+            <div class="ads-slides">
+                <img src="https://aguiladoradaselvahotel.com/wp-content/uploads/2026/05/7.webp" alt="Habitación">
+            </div>
+        </div>
+
+        <div class="ads-content">
+            <h3>Junior Suite</h3>
+
+            <div class="ads-icons">
+                <span><i class="fa-solid fa-user-group"></i> 02 pax</span>
+                <span><i class="fa-solid fa-bed"></i> King</span>
+                <span><i class="fa-solid fa-snowflake"></i> A/C</span>
+                <span><i class="fa-solid fa-wifi"></i> WiFi</span>
+                <span><i class="fa-solid fa-building"></i> Balcón</span>
+                <span><i class="fa-solid fa-hot-tub-person"></i> Jacuzzi</span>
+            </div>
+
+            <div class="ads-prices">
+                <div class="ads-old">S/ 300</div>
+                <div class="ads-new">S/ 230 x noche</div>
+            </div>
+
+            <div class="ads-dates">
+                <div class="ads-date-group">
+                    <label>Check-in</label>
+                    <input type="date" class="checkin" id="fecha-ingreso">
+                </div>
+                <div class="ads-date-group">
+                    <label>Check-out</label>
+                    <input type="date" class="checkout" id="fecha-salida">
+                </div>
+            </div>
+
+            <div id="resumen-precio"
+                style="display:none; background:#e8f8f5; padding:10px; border-radius:5px; margin-top:10px; text-align:center; color:#16a085; font-weight:bold;">
+            </div>
+
+            <a class="ads-btn" href="#" id="btn-consultar">Consultar disponibilidad</a>
+            <a class="ads-gallery" href="#">Ver más fotos</a>
+            <button class="ads-accordion-btn">Incluye</button>
+
+            <div class="ads-accordion-content">
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Desayuno americano</li>
+                    <li><i class="fa-solid fa-check"></i> Traslados</li>
+                    <li><i class="fa-solid fa-check"></i> Entrada: 14:00 | Salida: 11:00</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bloquear fechas pasadas 
+        const hoy = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha-ingreso').setAttribute('min', hoy);
+        document.getElementById('fecha-salida').setAttribute('min', hoy);
+
+        const btnConsultar = document.getElementById('btn-consultar');
+        const precioBaseNoche = 230.00;
+
+        btnConsultar.addEventListener('click', function (evento) {
+            evento.preventDefault();
+
+            const fechaIngreso = document.getElementById('fecha-ingreso').value;
+            const fechaSalida = document.getElementById('fecha-salida').value;
+
+            // Validación : Campos vacíos
+            if (!fechaIngreso || !fechaSalida) {
+                alert("Por favor, selecciona las fechas de Check-in y Check-out.");
+                return;
+            }
+
+            // Cálculo matemático de noches
+            const fIn = new Date(fechaIngreso);
+            const fOut = new Date(fechaSalida);
+            const diferenciaMilisegundos = fOut.getTime() - fIn.getTime();
+            const diasEstadia = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+
+            //  Lógica de tiempo (Check-out debe ser después de Check-in)
+            if (diasEstadia <= 0) {
+                alert("La fecha de Check-out debe ser posterior al Check-in.");
+                return;
+            }
+
+            // Cálculo del precio final basado en las noches
+            const precioFinal = diasEstadia * precioBaseNoche;
+
+            // Mostrar el precio en pantalla al usuario antes de enviar
+            document.getElementById('resumen-precio').style.display = 'block';
+            document.getElementById('resumen-precio').innerText = `Total: ${diasEstadia} noches = S/ ${precioFinal.toFixed(2)}`;
+
+            const datosReserva = {
+                id_categoria: 1,
+                fecha_checkin: fechaIngreso,
+                fecha_checkout: fechaSalida,
+                precio_final: precioFinal
+            };
+
+
+            fetch('https://hoteles.inkarian.com/api/reservas.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datosReserva)
+            })
+                .then(respuesta => {
+                    if (!respuesta.ok) throw new Error('Error en el servidor');
+                    return respuesta.json();
+                })
+                .then(data => {
+                    alert(`¡Consulta registrada con éxito!\nID de Reserva: ${data.id_reserva}\nTotal a pagar en el hotel: S/ ${precioFinal.toFixed(2)}`);
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Hubo un problema de conexión con el servidor.');
+                });
+        });
+    </script>
+</body>
+
+</html>

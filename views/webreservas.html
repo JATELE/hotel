@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservas | CRM Hoteles</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--main:#008855;--main2:#006b43;--soft:#eef5f1}html,body{margin:0;padding:0;width:100%;overflow-x:hidden;background:#f7f8f6;font-family:Poppins,sans-serif}*{box-sizing:border-box}.hotel-demo-header{margin:12px 18px 0;padding:14px 18px;border-radius:18px;background:#fff;border:1px solid rgba(0,0,0,.06);box-shadow:0 8px 24px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.hotel-demo-header strong{font-size:18px;color:var(--main)}.hotel-demo-header span{font-size:13px;color:#666}.ads-wrapper{width:100%;max-width:1920px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,320px));gap:16px;padding:18px;justify-content:center}.ads-card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08);transition:.3s}.ads-card:hover{transform:translateY(-4px)}.ads-slider{position:relative;width:100%;height:170px;overflow:hidden;background:#ddd}.ads-slides{display:flex;width:300%;height:100%;animation:slide 15s infinite ease-in-out}.ads-slider:hover .ads-slides{animation-play-state:paused}.ads-slides img{width:100%;height:170px;flex:0 0 100%;object-fit:cover;display:block}.ads-badge{position:absolute;top:12px;left:12px;z-index:5;background:var(--main);color:#fff;font-size:11px;padding:7px 12px;border-radius:50px;font-weight:700}@keyframes slide{0%,30%{transform:translateX(0)}35%,65%{transform:translateX(-100%)}70%{transform:translateX(-200%)}100%{transform:translateX(0)}}.ads-content{padding:18px}.ads-content h3{margin:0 0 14px;font-size:20px;font-weight:700;color:#222}.ads-icons{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}.ads-icons span{display:flex;align-items:center;gap:6px;padding:7px 11px;border-radius:50px;background:var(--soft);border:1px solid #d8e7dd;color:var(--main);font-size:11px;font-weight:600}.ads-icons i{color:var(--main)}.ads-prices{display:flex;align-items:center;gap:12px;margin-bottom:18px}.ads-old{color:#d62828;text-decoration:line-through;font-size:17px;font-weight:600}.ads-new{color:var(--main);font-size:28px;font-weight:800}.ads-dates{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}.ads-date-group{width:100%;display:flex;flex-direction:column}.ads-date-group label{margin-bottom:6px;font-size:12px;font-weight:700;color:#666}.ads-date-group input{width:100%;padding:12px;border-radius:12px;border:1px solid #d7d7d7;outline:none;font-size:14px;background:#fff}.ads-btn{width:100%;display:block;text-align:center;padding:13px;border:0;border-radius:14px;background:var(--main);color:#fff;text-decoration:none;font-weight:700;margin-bottom:10px;transition:.3s;cursor:pointer;font-family:Poppins}.ads-btn:hover{background:var(--main2)}.ads-btn:disabled{opacity:.75;cursor:not-allowed}.ads-disponibilidad{min-height:28px;margin:-6px 0 12px;padding:8px 10px;border-radius:12px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px}.ads-disponibilidad.ok{background:#ecfdf5;color:#047857;border:1px solid #bbf7d0}.ads-disponibilidad.bad{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.ads-disponibilidad.loading{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}.ads-gallery{width:100%;display:block;text-align:center;padding:11px;border-radius:14px;border:1px solid var(--main);color:var(--main);text-decoration:none;font-weight:700;transition:.3s;margin-bottom:10px}.ads-gallery:hover{background:var(--main);color:#fff}.ads-accordion-btn{width:100%;border:none;cursor:pointer;background:var(--soft);color:var(--main);padding:12px;border-radius:14px;font-weight:700;font-size:14px;transition:.3s}.ads-accordion-content{max-height:0;overflow:hidden;transition:max-height .4s ease}.ads-accordion-content ul{list-style:none;padding:15px 10px 0;margin:0}.ads-accordion-content li{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;color:#444;font-size:13px}.ads-accordion-content i{color:var(--main);margin-top:3px}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#17202a;color:#fff;padding:12px 16px;border-radius:12px;z-index:9999;box-shadow:0 12px 30px rgba(0,0,0,.25);font-size:13px;display:none}.estado-carga{grid-column:1/-1;background:#fff;border-radius:18px;padding:28px;text-align:center;color:#667085;box-shadow:0 8px 24px rgba(0,0,0,.06);font-weight:700}@media(max-width:1200px){.ads-wrapper{grid-template-columns:repeat(auto-fit,minmax(260px,320px));justify-content:center}}@media(max-width:992px){.ads-wrapper{grid-template-columns:repeat(2,1fr)}}@media(max-width:768px){.ads-wrapper{grid-template-columns:1fr;padding:14px}.ads-slider,.ads-slides img{height:175px}}
+
+
+
+/* AJUSTE FINAL:
+   - Mantiene el diseño anterior cuando hay varias categorías.
+   - Evita que una sola categoría se estire dentro del iframe.
+   - Mantiene fotos proporcionadas sin deformarse. */
+.ads-wrapper{
+    width:100%;
+    max-width:1920px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,320px));
+    gap:20px;
+    padding:18px;
+    align-items:stretch;
+}
+.ads-wrapper.single-card{
+    grid-template-columns:minmax(260px,320px);
+    justify-content:start;
+}
+.ads-card{
+    min-width:0;
+}
+.ads-slider,
+.ads-slides img{
+    height:170px;
+}
+.ads-slides img{
+    width:100%;
+    min-width:100%;
+    object-fit:cover;
+    object-position:center;
+}
+@media(max-width:768px){
+    .ads-wrapper{
+        grid-template-columns:1fr;
+        padding:14px;
+    }
+    .ads-wrapper.single-card{
+        grid-template-columns:1fr;
+    }
+    .ads-slider,
+    .ads-slides img{
+        height:220px;
+    }
+}
+
+
+
+/* AJUSTE V4.1: imagen más compacta para iframe y móvil */
+.ads-wrapper{
+    align-items:start;
+}
+.ads-card{
+    width:100%;
+}
+.ads-slider,
+.ads-slides img{
+    height:210px;
+}
+.ads-slides img{
+    object-fit:cover;
+    object-position:center;
+}
+@media(max-width:768px){
+    .hotel-demo-header{margin:8px 10px 0;padding:12px 14px;border-radius:14px;}
+    .hotel-demo-header strong{font-size:16px;}
+    .hotel-demo-header span{font-size:12px;}
+    .ads-wrapper{padding:10px;gap:14px;}
+    .ads-card{border-radius:18px;}
+    .ads-slider,
+    .ads-slides img{height:155px;}
+    .ads-content{padding:15px;}
+    .ads-content h3{font-size:19px;margin-bottom:12px;}
+    .ads-new{font-size:26px;}
+}
+@media(max-width:420px){
+    .ads-slider,
+    .ads-slides img{height:145px;}
+    .ads-icons span{font-size:10.5px;padding:6px 9px;}
+    .ads-date-group input{padding:11px;}
+}
+
+</style>
+</head>
+<body>
+<section class="hotel-demo-header"><strong id="hotel-nombre">Cargando hotel...</strong><span>Reservas visuales conectadas al CRM</span></section>
+<div id="ads-wrapper" class="ads-wrapper"><div class="estado-carga"><i class="fa-solid fa-spinner fa-spin"></i> Cargando habitaciones...</div></div>
+<div id="toast" class="toast"></div>
+<script>
+const paramsUrl=new URLSearchParams(window.location.search);
+const HOTEL_SLUG=paramsUrl.get('hotel') || document.body.dataset.hotelSlug || '';
+const CATEGORIA_FILTRO=paramsUrl.get('categoria') || '';
+let HOTEL_ID=Number(paramsUrl.get('id_hotel') || 0);
+let HOTEL_WHATSAPP='';
+const wrapper=document.getElementById('ads-wrapper');
+const toast=document.getElementById('toast');
+function showToast(msg){toast.textContent=msg;toast.style.display='block';clearTimeout(window.__t);window.__t=setTimeout(()=>toast.style.display='none',3200)}
+function fechaHoyISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function sumarDiasISO(iso,dias){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+dias);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function parseFechaLocal(v){return new Date(v+'T00:00:00')}
+function money(n){return 'S/ '+Number(n||0).toFixed(0)}
+function iconoServicio(txt){txt=String(txt||'').toLowerCase();if(txt.includes('wifi'))return 'fa-wifi';if(txt.includes('jacuzzi'))return 'fa-hot-tub-person';if(txt.includes('balc'))return 'fa-building';if(txt.includes('cama')||txt.includes('king')||txt.includes('simple'))return 'fa-bed';if(txt.includes('a/c')||txt.includes('aire'))return 'fa-snowflake';if(txt.includes('baño'))return 'fa-bath';return 'fa-check'}
+function validar(card){const btn=card.querySelector('.ads-btn'), checkin=card.querySelector('.checkin'), checkout=card.querySelector('.checkout');const inVal=checkin.value,outVal=checkout.value;if(!inVal||!outVal){btn.disabled=true;return{valid:false,msg:'Selecciona check-in y check-out'}}if(inVal<fechaHoyISO()){checkin.value=fechaHoyISO();btn.disabled=true;return{valid:false,msg:'El check-in no puede ser anterior a hoy'}}if(outVal<=inVal){checkout.value='';btn.disabled=true;return{valid:false,msg:'El check-out debe ser posterior al check-in'}}const nights=Math.floor((parseFechaLocal(outVal)-parseFechaLocal(inVal))/(24*60*60*1000));btn.disabled=nights<=0;return{valid:nights>0,nights,msg:'Revisa las fechas'}}
+function crearCard(cat){const imgs=(cat.imagenes&&cat.imagenes.length?cat.imagenes:[cat.imagen_1,cat.imagen_2,cat.imagen_3]).filter(Boolean);while(imgs.length<3)imgs.push('https://aguiladoradaselvahotel.com/wp-content/uploads/2026/05/7.webp');const servicios=cat.servicios_lista||[];const incluye=cat.incluye_lista||[];const card=document.createElement('div');card.className='ads-card';card.dataset.room=cat.nombre;card.dataset.price=cat.precio_base;card.dataset.categoryId=cat.id_categoria;card.innerHTML=`<div class="ads-slider"><div class="ads-badge">${cat.etiqueta||'Disponible'}</div><div class="ads-slides">${imgs.slice(0,3).map(i=>`<img src="${i}" alt="${cat.nombre}">`).join('')}</div></div><div class="ads-content"><h3>${cat.nombre}</h3><div class="ads-icons"><span><i class="fa-solid fa-user-group"></i> ${String(cat.capacidad_pax).padStart(2,'0')} pax</span>${cat.tipo_cama?`<span><i class="fa-solid fa-bed"></i> ${cat.tipo_cama}</span>`:''}${servicios.map(s=>`<span><i class="fa-solid ${iconoServicio(s)}"></i> ${s}</span>`).join('')}</div><div class="ads-prices">${cat.precio_anterior?`<div class="ads-old">${money(cat.precio_anterior)}</div>`:''}<div class="ads-new">${money(cat.precio_base)}</div></div><div class="ads-dates"><div class="ads-date-group"><label>Check-in</label><input type="date" class="checkin"></div><div class="ads-date-group"><label>Check-out</label><input type="date" class="checkout"></div></div><div class="ads-date-group" style="margin-bottom:12px"><label>Cantidad de habitaciones</label><input type="number" class="cantidad" min="1" value="1"></div><div class="ads-disponibilidad"></div><button class="ads-btn" type="button" disabled>Consultar disponibilidad</button>${cat.galeria_url && cat.galeria_url !== '#' ? `<a class="ads-gallery" href="${cat.galeria_url}" target="_blank" rel="noopener">Ver más fotos</a>` : ''}<button class="ads-accordion-btn" type="button">Incluye</button><div class="ads-accordion-content"><ul>${incluye.map(i=>`<li><i class="fa-solid fa-check"></i> ${i}</li>`).join('')}</ul></div></div>`;return card}
+function setDisponibilidadStatus(card,tipo,msg){let box=card.querySelector('.ads-disponibilidad');if(!box)return;box.className='ads-disponibilidad '+(tipo||'');box.innerHTML=msg||''}
+async function verificarDisponibilidadCard(card, silencioso=false){const r=validar(card);const btn=card.querySelector('.ads-btn');if(!r.valid){setDisponibilidadStatus(card,'','');return{ok:false,nights:0}}const categoryId=Number(card.dataset.categoryId||0);const checkin=card.querySelector('.checkin').value;const checkout=card.querySelector('.checkout').value;const cantidad=Math.max(1,Number(card.querySelector('.cantidad')?.value||1));setDisponibilidadStatus(card,'loading','<i class="fa-solid fa-spinner fa-spin"></i> Verificando disponibilidad...');try{const params=new URLSearchParams({hotel:HOTEL_SLUG,id_hotel:String(HOTEL_ID),id_categoria:String(categoryId),fecha_checkin:checkin,fecha_checkout:checkout,cantidad_habitaciones:String(cantidad)});const res=await fetch('../api/disponibilidad.php?'+params.toString(),{cache:'no-store'});const data=await res.json();if(res.ok&&data.disponible){setDisponibilidadStatus(card,'ok', data.gestion_por_habitacion === false ? '<i class="fa-solid fa-circle-check"></i> Disponible para registrar consulta' : `<i class="fa-solid fa-circle-check"></i> Disponible: ${data.habitaciones_libres} habitación(es) libre(s)`);btn.disabled=false;return{ok:true,nights:r.nights,habitaciones:data.habitaciones||[]}}setDisponibilidadStatus(card,'bad','<i class="fa-solid fa-circle-xmark"></i> '+(data.mensaje||data.error||'No disponible para esas fechas'));btn.disabled=true;if(!silencioso)showToast(data.mensaje||data.error||'No hay disponibilidad.');return{ok:false,nights:r.nights}}catch(e){setDisponibilidadStatus(card,'bad','<i class="fa-solid fa-triangle-exclamation"></i> No se pudo verificar disponibilidad');btn.disabled=true;if(!silencioso)showToast('Error al verificar disponibilidad.');return{ok:false,nights:r.nights}}}
+function activarCard(card){const btn=card.querySelector('.ads-btn'), checkin=card.querySelector('.checkin'), checkout=card.querySelector('.checkout');const hoy=fechaHoyISO();let timer=null;checkin.min=hoy;checkout.min=sumarDiasISO(hoy,1);function programarVerificacion(){clearTimeout(timer);const r=validar(card);btn.disabled=true;btn.textContent='Consultar disponibilidad';if(!r.valid){setDisponibilidadStatus(card,'','');return}timer=setTimeout(()=>verificarDisponibilidadCard(card,true),450)}checkin.addEventListener('change',()=>{if(checkin.value){checkout.min=sumarDiasISO(checkin.value,1);if(checkout.value&&checkout.value<=checkin.value){checkout.value='';showToast('Selecciona un check-out posterior.')}}const r=validar(card);if(!r.valid&&(checkin.value||checkout.value))showToast(r.msg);programarVerificacion()});checkout.addEventListener('change',()=>{const r=validar(card);if(!r.valid&&(checkin.value||checkout.value))showToast(r.msg);programarVerificacion()});card.querySelector('.cantidad')?.addEventListener('change',programarVerificacion);btn.addEventListener('click',async()=>{const verif=await verificarDisponibilidadCard(card,false);if(!verif.ok)return;const r=validar(card);if(!r.valid){showToast(r.msg);return}const room=card.dataset.room,price=Number(card.dataset.price||0),categoryId=Number(card.dataset.categoryId||0),cantidad=Math.max(1,Number(card.querySelector('.cantidad')?.value||1)),total=price*r.nights*cantidad;const old=btn.textContent;btn.disabled=true;btn.textContent='Registrando...';try{const response=await fetch('../api/reservas.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id_categoria:categoryId,fecha_checkin:checkin.value,fecha_checkout:checkout.value,precio_final:total,id_hotel:HOTEL_ID,canal_reserva:'Web',hotel_nombre:document.getElementById('hotel-nombre').textContent,cantidad_habitaciones:cantidad})});const text=await response.text();let data={};try{data=text?JSON.parse(text):{}}catch(e){throw new Error('Respuesta inesperada del servidor')}if(response.ok&&data.id_reserva){showToast('¡Consulta registrada! Abriendo WhatsApp...');const msg=`Hola ${document.getElementById('hotel-nombre').textContent},\n\nEstoy interesado en ${room}.\n\n📅 Check-in: ${checkin.value}\n📅 Check-out: ${checkout.value}\n🌙 Noches: ${r.nights}\n\n💰 Tarifa por noche: S/ ${price}\n🏨 Cantidad: ${cantidad}\n💵 Monto total: S/ ${total}\n\nDeseo consultar disponibilidad.`;setTimeout(()=>window.open('https://wa.me/'+HOTEL_WHATSAPP+'?text='+encodeURIComponent(msg),'_blank'),700)}else{showToast(data.error||'No se pudo registrar la reserva.');btn.disabled=false;btn.textContent=old;await verificarDisponibilidadCard(card,true)}}catch(err){showToast('Error de conexión: '+err.message);btn.disabled=false;btn.textContent=old}});const acc=card.querySelector('.ads-accordion-btn');acc.addEventListener('click',function(){const c=this.nextElementSibling;const open=c.style.maxHeight;if(open){c.style.maxHeight=null}else{c.style.maxHeight=c.scrollHeight+'px'}})}
+async function cargarCategorias(){try{if(!HOTEL_SLUG && !HOTEL_ID){throw new Error('Falta parámetro ?hotel=slug-del-hotel');}let query=HOTEL_ID>0?'id_hotel='+encodeURIComponent(HOTEL_ID):'hotel='+encodeURIComponent(HOTEL_SLUG);if(CATEGORIA_FILTRO)query+='&categoria='+encodeURIComponent(CATEGORIA_FILTRO);const res=await fetch('../api/webreservas_categorias.php?'+query,{cache:'no-store'});const data=await res.json();if(!res.ok)throw new Error(data.error||'No se pudo cargar');document.getElementById('hotel-nombre').textContent=data.hotel.nombre_comercial||'Hotel';HOTEL_WHATSAPP=data.hotel.whatsapp||HOTEL_WHATSAPP;HOTEL_ID=Number(data.hotel.id_hotel||HOTEL_ID);wrapper.innerHTML='';if(!data.categorias||data.categorias.length===0){wrapper.classList.remove('single-card');wrapper.innerHTML='<div class="estado-carga">No hay categorías activas para mostrar.</div>';return}wrapper.classList.toggle('single-card', data.categorias.length===1);data.categorias.forEach(cat=>{const card=crearCard(cat);wrapper.appendChild(card);activarCard(card)})}catch(e){wrapper.innerHTML='<div class="estado-carga">Error al cargar habitaciones: '+e.message+'</div>'}}
+document.addEventListener('DOMContentLoaded',cargarCategorias);
+</script>
+</body>
+</html>

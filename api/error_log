@@ -1,0 +1,7 @@
+[04-Jul-2026 01:12:42 America/New_York] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/ezmehhkn/hoteles.inkarian.com/config/Database.php:22) in /home/ezmehhkn/hoteles.inkarian.com/config/auth.php on line 42
+[04-Jul-2026 01:12:42 America/New_York] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/ezmehhkn/hoteles.inkarian.com/models/Reserva.php:160
+Stack trace:
+#0 /home/ezmehhkn/hoteles.inkarian.com/controllers/ReservaController.php(98): Reserva->leerTodas(1, false)
+#1 /home/ezmehhkn/hoteles.inkarian.com/api/reservas.php(25): ReservaController->listar()
+#2 {main}
+  thrown in /home/ezmehhkn/hoteles.inkarian.com/models/Reserva.php on line 160

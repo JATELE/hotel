@@ -18,6 +18,7 @@ $rolActual = $usuarioActual['rol'] ?? '';
 $hotelSlugActual = $usuarioActual['hotel_slug'] ?? '';
 $webReservasUrl = 'webreservas.html' . ($hotelSlugActual !== '' ? '?hotel=' . urlencode($hotelSlugActual) : ($idHotelActual > 0 ? '?id_hotel=' . $idHotelActual : ''));
 $categoriasHotel = [];
+$encuestasActivas = [];
 $gestionPorHabitacion = false;
 try {
     if ($idHotelActual > 0) {
@@ -28,9 +29,13 @@ try {
         $stmtCategorias = $dbCategorias->prepare("SELECT id_categoria, nombre, slug FROM categorias WHERE id_hotel = ? AND estado = 'ACTIVO' ORDER BY id_categoria ASC");
         $stmtCategorias->execute([$idHotelActual]);
         $categoriasHotel = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);
+        $stmtEncuestas = $dbCategorias->prepare("SELECT id_encuesta, titulo FROM encuestas WHERE id_hotel = ? AND estado = 'ACTIVA' ORDER BY titulo ASC");
+        $stmtEncuestas->execute([$idHotelActual]);
+        $encuestasActivas = $stmtEncuestas->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (Throwable $e) {
     $categoriasHotel = [];
+    $encuestasActivas = [];
     $gestionPorHabitacion = false;
 }
 
@@ -1059,6 +1064,9 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
         .mini-btn.abrir{background:#2563eb;color:white}.mini-btn.copiar{background:#e2e8f0;color:#1e293b;}
         @media(max-width:700px){.detalle-resumen{grid-template-columns:1fr}.modal-secundario{width:calc(100vw - 16px)}}
 
+
+        .btn-encuesta{width:38px;height:38px;border:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#ede9fe;color:#6d28d9;cursor:pointer;font-size:15px;transition:.2s}.btn-encuesta:hover{background:#ddd6fe;transform:translateY(-1px)}
+        .encuesta-envio-modal{width:min(520px,calc(100vw - 32px));padding:26px}.encuesta-envio-modal .survey-icon{width:48px;height:48px;border-radius:15px;background:#ede9fe;color:#6d28d9;display:grid;place-items:center;font-size:22px;margin-bottom:12px}.encuesta-envio-modal label{display:block;font-size:12px;font-weight:800;color:#334155;margin:16px 0 7px}.encuesta-envio-modal select{width:100%;height:48px;border:1px solid #cbd5e1;border-radius:12px;padding:0 14px;background:#fff;font-family:Poppins;font-weight:700;color:#172033;outline:none}.encuesta-envio-modal select:focus{border-color:#7c3aed;box-shadow:0 0 0 3px #ede9fe}.btn-enviar-encuesta{border:0;border-radius:12px;padding:13px 17px;background:#25d366;color:#fff;font-family:Poppins;font-weight:900;cursor:pointer}.btn-enviar-encuesta:hover{background:#1fbd5b}
     </style>
 </head>
 
@@ -1667,6 +1675,24 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
         </div>
     </div>
 
+
+    <div id="modal-enviar-encuesta" class="modal-content encuesta-envio-modal" tabindex="0">
+        <div class="survey-icon"><i class="fa-solid fa-square-poll-horizontal"></i></div>
+        <div class="modal-header"><h2 style="margin:0"><span>Enviar encuesta</span><i class="fa-solid fa-xmark modal-close-icon" onclick="cerrarModalEncuesta()"></i></h2></div>
+        <p style="color:#64748b;font-size:13px;margin:8px 0 0">Selecciona la encuesta que recibirá el cliente por WhatsApp.</p>
+        <label for="encuesta-seleccionada">Seleccionar encuesta</label>
+        <select id="encuesta-seleccionada">
+            <option value="">Selecciona una encuesta activa</option>
+            <?php foreach($encuestasActivas as $encuesta): ?>
+                <option value="<?= (int)$encuesta['id_encuesta'] ?>"><?= htmlspecialchars($encuesta['titulo']) ?></option>
+            <?php endforeach; ?>
+        </select>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+            <button type="button" onclick="cerrarModalEncuesta()" class="btn-modal" style="background:#eef2f7;color:#475569">Cancelar</button>
+            <button type="button" onclick="enviarEncuestaWhatsApp()" class="btn-enviar-encuesta"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</button>
+        </div>
+    </div>
+
     <div id="toast-container" class="toast-container"></div>
 
     <footer class="feed-footer">
@@ -1680,6 +1706,8 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
         const ES_RECEPCIONISTA = ROL_USUARIO === 'recepcionista';
         const ES_RECEPCION = ES_ADMIN || ES_RECEPCIONISTA;
         const GESTION_POR_HABITACION = <?= $gestionPorHabitacion ? 'true' : 'false' ?>;
+        const ENCUESTAS_ACTIVAS = <?= json_encode($encuestasActivas, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) ?>;
+        const HOTEL_SLUG_ENCUESTA = <?= json_encode($hotelSlugActual, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) ?>;
 
         let reservaActualId = null;
         let todasLasReservas = [];
@@ -1694,6 +1722,7 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
         let chartIngresos = null;
         let chartCategorias = null;
         let reservaWhatsAppActual = null;
+        let reservaEncuestaActual = null;
         let chartCanales = null;
 
         // --- NUEVA FUNCIÓN: Notificaciones Animadas ---
@@ -1996,6 +2025,7 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
             datos.forEach((reserva, index) => {
                 const esPendiente = reserva.estado_reserva === 'Pendiente';
                 const esAtendida = reserva.estado_reserva === 'Atendida';
+                const esCulminada = reserva.estado_reserva === 'Culminada';
                 const bloqueoActivo = String(reserva.bloqueo_activo || '0') === '1' && Number(reserva.id_usuario_tomada || 0) !== Number(ID_USUARIO_ACTUAL || 0);
                 const bloqueoTexto = bloqueoActivo
                     ? `<span style="display:inline-flex;align-items:center;gap:6px;color:#b45309;background:#fffbeb;border:1px solid #fde68a;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800;" title="Bloqueada hasta ${reserva.bloqueo_hasta || ''}"><i class="fa-solid fa-lock"></i> ${reserva.usuario_tomada_nombre || 'En atención'}</span>`
@@ -2005,6 +2035,7 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
                 if (ES_RECEPCION) {
                     const botonEliminar = ES_ADMIN ? `<button class="btn-icon-delete" onclick="eliminarReserva(${reserva.id_reserva})" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>` : '';
                     const botonWhatsApp = esAtendida ? `<button class="btn-whatsapp" onclick="abrirWhatsApp(${reserva.id_reserva})" title="Preparar mensaje WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>` : '';
+                    const botonEncuesta = esCulminada ? `<button class="btn-encuesta" onclick="abrirModalEncuesta(${reserva.id_reserva})" title="Enviar encuesta"><i class="fa-solid fa-square-poll-horizontal"></i></button>` : '';
                     const puedeEditar = esAtendida;
                     const botonVerDetalleAccion = (Array.isArray(reserva.detalle_habitaciones) && reserva.detalle_habitaciones.length) || reserva.id_habitacion
                         ? `<button class="btn-icon-edit" onclick="abrirDetalleReserva(${reserva.id_reserva})" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>`
@@ -2019,6 +2050,7 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
                             : `<div class="acciones-wrap">
                                    ${botonVerDetalleAccion}
                                    ${botonWhatsApp}
+                                   ${botonEncuesta}
                                    ${puedeEditar ? `<button class="btn-icon-edit" onclick="abrirModalEditar(${reserva.id_reserva})" title="Editar"><i class="fa-solid fa-pencil"></i></button>` : ''}
                                    ${botonEliminar}
                                </div>`);
@@ -2215,6 +2247,45 @@ if (!in_array(($usuarioActual['rol'] ?? ''), ['admin_hotel', 'admin', 'recepcion
             }
             window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
             cerrarModalWhatsApp();
+        }
+
+
+        function abrirModalEncuesta(id) {
+            const reserva = todasLasReservas.find(r => Number(r.id_reserva) === Number(id));
+            if (!reserva) return mostrarNotificacion('No se encontró la reserva.', 'error');
+            if (!ENCUESTAS_ACTIVAS.length) return mostrarNotificacion('No hay encuestas activas configuradas.', 'error');
+            const numero = normalizarTelefonoWhatsApp(reserva.telefono);
+            if (!numero) return mostrarNotificacion('La reserva no tiene un número de WhatsApp válido.', 'error');
+            reservaEncuestaActual = reserva;
+            const select = document.getElementById('encuesta-seleccionada');
+            select.value = ENCUESTAS_ACTIVAS.length === 1 ? String(ENCUESTAS_ACTIVAS[0].id_encuesta) : '';
+            document.getElementById('modal-overlay').style.display = 'block';
+            const modal = document.getElementById('modal-enviar-encuesta');
+            modal.style.display = 'block';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function cerrarModalEncuesta() {
+            const modal = document.getElementById('modal-enviar-encuesta');
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; document.getElementById('modal-overlay').style.display = 'none'; }, 150);
+            reservaEncuestaActual = null;
+        }
+
+        function enviarEncuestaWhatsApp() {
+            if (!reservaEncuestaActual) return;
+            const idEncuesta = Number(document.getElementById('encuesta-seleccionada').value || 0);
+            const encuesta = ENCUESTAS_ACTIVAS.find(e => Number(e.id_encuesta) === idEncuesta);
+            if (!encuesta) return mostrarNotificacion('Selecciona una encuesta.', 'error');
+            const numero = normalizarTelefonoWhatsApp(reservaEncuestaActual.telefono);
+            const url = `${location.origin}${location.pathname.replace(/recepcion\.php$/, 'encuesta_publica.php')}?hotel=${encodeURIComponent(HOTEL_SLUG_ENCUESTA)}&encuesta=${idEncuesta}&id_reserva=${encodeURIComponent(reservaEncuestaActual.id_reserva)}`;
+            const cliente = String(reservaEncuestaActual.cli_nombres || reservaEncuestaActual.cliente || '').trim();
+            const hotel = <?= json_encode($usuarioActual['hotel'] ?? 'nuestro hotel') ?>;
+            const mensaje = `Hola ${cliente}, gracias por hospedarse en ${hotel}. Nos gustaría conocer su experiencia. Completa nuestra encuesta aquí:
+
+${url}`;
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+            cerrarModalEncuesta();
         }
 
         function actualizarReportes(datosBase) {
